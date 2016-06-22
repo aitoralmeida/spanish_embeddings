@@ -51,7 +51,7 @@ for year in years:
             print '$s - No more documents in %s' % (datetime.now().ctime(), year)
             sys.stdout.flush()
             break
-        soup = BeautifulSoup(web)   
+        soup = BeautifulSoup(web, "html.parser")   
         for paragraph in soup.findAll('p'):
             try:
                 clazz = paragraph['class'][0]
@@ -63,8 +63,9 @@ for year in years:
             except:
                 pass
         if i % 5000 == 0:
-            print '$s - %s documents saved' % (datetime.now().ctime(), i)
+            print '%s - %s documents saved' % (datetime.now().ctime(), i)
             sys.stdout.flush()
+            output.flush()
     
 output.close()
 print 'done'
