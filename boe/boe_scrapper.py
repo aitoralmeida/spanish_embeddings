@@ -54,7 +54,7 @@ for year in years:
         web = r.text
         i += 1
         if ERROR in web:
-            print '$s - No more documents in %s' % (datetime.now().ctime(), year)
+            print '%s - No more documents in %s' % (datetime.now().ctime(), year)
             sys.stdout.flush()
             break
         soup = BeautifulSoup(web, "html.parser")   
