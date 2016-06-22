@@ -30,16 +30,22 @@ i = 0
 for year in years:
     print '%s - Processing year %s' % (datetime.now().ctime(), year)
     sys.stdout.flush()
-    for index in range(1, MAX_DOCUMENTS):
-        
-        url = "%s%s-%s" % (BASE_URL, year, index)
-        r = requests.get(url)
+    for index in range(1, MAX_DOCUMENTS):        
+        url = "%s%s-%s" % (BASE_URL, year, index)        
         retries = 0
-        while r.status_code != 200:
-            print '%s - Error %s, waiting 1 min' & (datetime.now().ctime(), r.status_code)
-            sys.stdout.flush()
-            time.sleep(1 * 60)
-            r = requests.get(url) 
+        status_code = 0   
+        while status_code != 200:
+            try:
+                r = requests.get(url)
+                status_code = r.status_code
+            except Exception as e:
+                print '%s - %s' & (datetime.now().ctime(), e.message)
+                sys.stdout.flush()
+                status_code = -11111
+            if status_code != 200:
+                 print '%s - Error %s, waiting 3 min' & (datetime.now().ctime(), r.status_code)
+                 sys.stdout.flush()
+                 time.sleep(3 * 60)
             retries +=1
             if retries > 5:
                 break
@@ -66,6 +72,10 @@ for year in years:
             print '%s - %s documents saved' % (datetime.now().ctime(), i)
             sys.stdout.flush()
             output.flush()
+            time.sleep(1 * 60)
+    print '%s - waiting 3 min between years' & (datetime.now().ctime(), r.status_code)
+    sys.stdout.flush()
+    time.sleep(3 * 60)
     
 output.close()
 print 'done'
