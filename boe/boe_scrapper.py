@@ -43,7 +43,7 @@ for year in years:
                 sys.stdout.flush()
                 status_code = -11111
             if status_code != 200:
-                 print '%s - Error %s, waiting 3 min' & (datetime.now().ctime(), r.status_code)
+                 print '%s - Error %s, waiting 3 min' & (datetime.now().ctime(), status_code)
                  sys.stdout.flush()
                  time.sleep(3 * 60)
             retries +=1
@@ -73,7 +73,7 @@ for year in years:
             sys.stdout.flush()
             output.flush()
             time.sleep(1 * 60)
-    print '%s - waiting 3 min between years' & (datetime.now().ctime(), r.status_code)
+    print '%s - waiting 3 min between years' & (datetime.now().ctime())
     sys.stdout.flush()
     time.sleep(3 * 60)
     
