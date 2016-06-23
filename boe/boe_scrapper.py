@@ -17,7 +17,7 @@ BASE_URL = "https://www.boe.es/diario_boe/txt.php?id=BOE-A-"
 ERROR = u'<p>Error: No se encontró el documento original.</p>' #that document does not exists
 MAX_DOCUMENTS = 60000 # max docments each year
 MINIMUN_LENGTH = 30 # we do not process paragraphs with less than this chars    
-years = range(1977, 2017)
+years = range(1981, 2017)
 classes = ['parrafo', 'parrafo_2']
 punctuation = set(string.punctuation) 
 punctuation.add(u'–')
@@ -39,11 +39,11 @@ for year in years:
                 r = requests.get(url)
                 status_code = r.status_code
             except:
-                print '%s - retry: %s' & (datetime.now().ctime(), retries)
+                print '%s - retry: %s' % (datetime.now().ctime(), retries)
                 sys.stdout.flush()
                 status_code = -11111
             if status_code != 200:
-                 print '%s - Error %s, retry %s, waiting 3 min' & (datetime.now().ctime(), status_code, retries)
+                 print '%s - Error %s, retry %s, waiting 3 min' % (datetime.now().ctime(), status_code, retries)
                  sys.stdout.flush()
                  time.sleep(3 * 60)
             retries +=1
