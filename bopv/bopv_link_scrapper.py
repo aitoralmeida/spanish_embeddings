@@ -81,8 +81,9 @@ for year in years:
             try:
                 clazz = div['class'][0]
                 if clazz in classes:
-                    link = div.find('a').get('href')                
-                    output.write(link + "\n") 
+                    link = div.find('a').get('href') 
+                    if not 'pdf' in link:                        
+                        output.write(link + "\n") 
             except:
                 pass
         
