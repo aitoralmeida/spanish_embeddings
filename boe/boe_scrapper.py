@@ -73,7 +73,7 @@ for year in years:
             sys.stdout.flush()
             output.flush()
             time.sleep(1 * 60)
-    print '%s - waiting 3 min between years' & (datetime.now().ctime())
+    print '%s - waiting 3 min between years' % (datetime.now().ctime())
     sys.stdout.flush()
     output.close()
     time.sleep(3 * 60)
