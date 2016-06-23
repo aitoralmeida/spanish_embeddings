@@ -38,7 +38,7 @@ for year in years:
             try:
                 r = requests.get(url)
                 status_code = r.status_code
-            except Exception as e:
+            except:
                 print '%s - retry: %s' & (datetime.now().ctime(), retries)
                 sys.stdout.flush()
                 status_code = -11111
