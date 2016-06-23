@@ -14,7 +14,6 @@ import time
 from bs4 import BeautifulSoup
 
 BASE_URL = "https://www.boe.es/diario_boe/txt.php?id=BOE-A-"
-OUTPUT = 'boe.text'
 ERROR = u'<p>Error: No se encontró el documento original.</p>' #that document does not exists
 MAX_DOCUMENTS = 60000 # max docments each year
 MINIMUN_LENGTH = 30 # we do not process paragraphs with less than this chars    
@@ -23,11 +22,12 @@ classes = ['parrafo', 'parrafo_2']
 punctuation = set(string.punctuation) 
 punctuation.add(u'–')
 
-output = open(OUTPUT, 'w')
 
 print 'Starting web scrapping...'
 i = 0
 for year in years:
+    output_file = "boe_%s.text" % (year)
+    output = open(output_file, 'w')
     print '%s - Processing year %s' % (datetime.now().ctime(), year)
     sys.stdout.flush()
     for index in range(1, MAX_DOCUMENTS):        
@@ -39,11 +39,11 @@ for year in years:
                 r = requests.get(url)
                 status_code = r.status_code
             except Exception as e:
-                print '%s - %s' & (datetime.now().ctime(), e.message)
+                print '%s - retry: %s' & (datetime.now().ctime(), retries)
                 sys.stdout.flush()
                 status_code = -11111
             if status_code != 200:
-                 print '%s - Error %s, waiting 3 min' & (datetime.now().ctime(), status_code)
+                 print '%s - Error %s, retry %s, waiting 3 min' & (datetime.now().ctime(), status_code, retries)
                  sys.stdout.flush()
                  time.sleep(3 * 60)
             retries +=1
@@ -75,8 +75,7 @@ for year in years:
             time.sleep(1 * 60)
     print '%s - waiting 3 min between years' & (datetime.now().ctime())
     sys.stdout.flush()
+    output.close()
     time.sleep(3 * 60)
-    
-output.close()
 print 'done'
 
