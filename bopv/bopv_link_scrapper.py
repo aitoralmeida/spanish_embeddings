@@ -32,6 +32,8 @@ for year in years:
     sys.stdout.flush()
     
     for index in range(1, MAX_DOCUMENTS):
+        print '%s - %s' % (datetime.now().ctime(), i)
+        sys.stdout.flush()
         #build URL, adding 0-s to the current document until EXPECTED_LENGHT
         current_document = (EXPECTED_LENGTH - len(str(i))) * '0' + str(i)  
 #        url = "%s%s%s" % (BASE_URL, year, current_document)
@@ -71,6 +73,9 @@ for year in years:
                     break
             except:
                 pass
+            
+        print '%s - Last summary: %s, current summary: %s' % (datetime.now().ctime(), last_summary, current_summary)
+        sys.stdout.flush()
         if current_summary <= last_summary: 
             print '%s - No more documents in %s' % (datetime.now().ctime(), year)
             sys.stdout.flush()
@@ -90,9 +95,7 @@ for year in years:
         if i % 1000 == 0:
             print '%s - %s documents saved' % (datetime.now().ctime(), i)
             sys.stdout.flush()
-            output.flush()
-        if i % 8000 == 0:
-            time.sleep(1 * 60)               
+            output.flush()             
     print '%s - waiting 1 min between years' % (datetime.now().ctime())
     sys.stdout.flush()
     output.close()
