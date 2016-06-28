@@ -21,7 +21,7 @@ NEWSPIDER_MODULE = 'crawlers.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 LOG_LEVEL='ERROR'
-DOWNLOAD_DELAY = 0.5
+#DOWNLOAD_DELAY = 0.5
 COOKIES_ENABLED = False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
