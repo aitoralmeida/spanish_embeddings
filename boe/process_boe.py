@@ -5,7 +5,7 @@ Created on Thu Jun 23 14:27:07 2016
 @author: aitor
 """
 
-#USAGE: python process_boe.py boe boe.text
+#USAGE: python merge_txts.py boe boe.text
 
 import glob
 import string
@@ -23,7 +23,8 @@ if __name__ == '__main__':
     
     i = 0    
     MINIMUN_LENGTH = 20 # we do not process paragraphs with less than this chars     
-    exclude = set(string.punctuation)       
+    exclude = set(string.punctuation) 
+    exclude.add(u'–')      
     for book_file in glob.glob(inp + '/*.txt'):
         i = i + 1
         with open(book_file, 'r') as book:
@@ -34,6 +35,6 @@ if __name__ == '__main__':
                     #processed_text = processed_text.encode('utf-8')
                     output.write(processed_text + "\n") 
         if (i % 200 == 0):
-            print "Saved %s books" % (i)
+            print "Saved %s elements" % (i)
     output.close()
-    print "Finished Saved %s books" % (i)
+    print "Finished Saved %s elements" % (i)

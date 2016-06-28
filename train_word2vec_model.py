@@ -34,3 +34,4 @@ if __name__ == '__main__':
     #model.init_sims(replace=True)
     model.save(outp1)
     model.save_word2vec_format(outp2, binary=False)
+    print 'FIN'    

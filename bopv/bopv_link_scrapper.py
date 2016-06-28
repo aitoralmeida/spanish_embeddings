@@ -59,6 +59,9 @@ for year in years:
         if retries > 5:
             continue            
         web = r.text
+        if u'Error inesperado' in web:
+            print '%s - No more documents this year' % (datetime.now().ctime())
+            break
         i += 1
         soup = BeautifulSoup(web, "html.parser")  
         #find current summary
@@ -69,7 +72,7 @@ for year in years:
                     if not 'Sumario ' in h2_text:
                         continue
                     current_summary = h2_text.split(u'º')[1].strip()
-                    current_summary = current_summary.split(u',')[0]
+                    current_summary = current_summary.split(u',')[0]                    
                     break
             except:
                 pass
