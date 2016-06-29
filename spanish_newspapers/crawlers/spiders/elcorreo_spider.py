@@ -5,12 +5,15 @@ from crawlers.items import ScrapyEditorialItem
 #USAGE: scrapy crawl elcorreo_spider -o elcorreo.json
 class ElcorreoScraper(scrapy.Spider):
     name = 'elcorreo_spider'
-    start_date = datetime.datetime.now()
-    finish_date = datetime.datetime(2012, 6, 24)
+    #start_date = datetime.datetime.now()
+    start_date = datetime.datetime(2014, 6, 23)
+    finish_date = datetime.datetime(2013, 12, 31)
+    #First Crawl
+    #finish_date = datetime.datetime(2014, 6, 24)
     day = datetime.timedelta(days=1)
     total_news = 0
     not_allowed = 0
-    start_urls = ['http://www.elcorreo.com/hemeroteca/noticia/20160627.html']
+    start_urls = ['http://www.elcorreo.com/hemeroteca/noticia/20140623.html']
     pre_url = 'http://www.elcorreo.com/hemeroteca/noticia/'
     post_url = '.html'
     def parse(self, response):
@@ -53,7 +56,14 @@ class ElcorreoScraper(scrapy.Spider):
         if len(content) == 0:
             content = sel.xpath('//*[@id="story-texto"]/p//text()').extract()
             if len(content) == 0:
-                self.not_allowed += 1
+                content = sel.xpath('//*[@id="ccronica"]/div/p//text()').extract()
+                if len(content) == 0:
+                    self.not_allowed += 1
+                else:
+                    content = ' '.join(content)
+                    item['text'] = content
+                    self.total_news += 1
+                    return item
             else:
                 content = ' '.join(content)
                 item['text'] = content
