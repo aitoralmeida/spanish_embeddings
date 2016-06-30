@@ -6,14 +6,14 @@ from crawlers.items import ScrapyEditorialItem
 class ElcorreoScraper(scrapy.Spider):
     name = 'elcorreo_spider'
     #start_date = datetime.datetime.now()
-    start_date = datetime.datetime(2013, 12, 30)
-    finish_date = datetime.datetime(2012, 12, 31)
+    start_date = datetime.datetime(2011, 12, 30)
+    finish_date = datetime.datetime(2010, 12, 31)
     #First Crawl
     #finish_date = datetime.datetime(2014, 6, 24)
     day = datetime.timedelta(days=1)
     total_news = 0
     not_allowed = 0
-    start_urls = ['http://www.elcorreo.com/hemeroteca/noticia/20131230.html']
+    start_urls = ['http://www.elcorreo.com/hemeroteca/noticia/20111230.html']
     pre_url = 'http://www.elcorreo.com/hemeroteca/noticia/'
     post_url = '.html'
     def parse(self, response):
@@ -60,7 +60,35 @@ class ElcorreoScraper(scrapy.Spider):
                 if len(content) == 0:
                     content = sel.xpath('//*[@id="ccronica"]/div/div[contains(@class,"p")]//text()').extract()
                     if len(content) == 0:
-                        self.not_allowed += 1
+                        content = sel.xpath('//*[@id="story-texto"]/div[contains(@class,"p")]//text()').extract()
+                        if len(content) == 0:
+                            content = sel.xpath('//*[@id="articulo"]/div/div[1]/div[3]/div[2]/p//text()').extract()
+                            if len(content) == 0:
+                                content = sel.xpath('//*[@id="todoportal"]/div[8]/div/div[3]/div[2]/div[1]/div[1]/div/div[contains(@class,"p")]//text()').extract()
+                                if len(content) == 0:
+                                    content = sel.xpath('//*[@id="todoportal"]/div[7]/div/div[3]/div[2]/div[1]/div[1]/div/div[1]').extract()
+                                    if len(content) == 0:
+                                        self.not_allowed += 1
+                                    else:
+                                        content = ' '.join(content)
+                                        item['text'] = content
+                                        self.total_news += 1
+                                        return item
+                                else:
+                                    content = ' '.join(content)
+                                    item['text'] = content
+                                    self.total_news += 1
+                                    return item
+                            else:
+                                content = ' '.join(content)
+                                item['text'] = content
+                                self.total_news += 1
+                                return item
+                        else:
+                            content = ' '.join(content)
+                            item['text'] = content
+                            self.total_news += 1
+                            return item
                     else:
                         content = ' '.join(content)
                         item['text'] = content
