@@ -60,15 +60,22 @@ class ElcorreoScraper(scrapy.Spider):
                 if len(content) == 0:
                     content = sel.xpath('//*[@id="ccronica"]/div/div[contains(@class,"p")]//text()').extract()
                     if len(content) == 0:
-                        content = sel.xpath('//*[@id="story-texto"]/div[contains(@class,"p")]//text()').extract()
+                        content = sel.xpath('//*[@id="story-texto"]//div[contains(@class,"p")]//text()').extract()
                         if len(content) == 0:
                             content = sel.xpath('//*[@id="articulo"]/div/div[1]/div[3]/div[2]/p//text()').extract()
                             if len(content) == 0:
                                 content = sel.xpath('//*[@id="todoportal"]/div[8]/div/div[3]/div[2]/div[1]/div[1]/div/div[contains(@class,"p")]//text()').extract()
                                 if len(content) == 0:
-                                    content = sel.xpath('//*[@id="todoportal"]/div[7]/div/div[3]/div[2]/div[1]/div[1]/div/div[1]').extract()
+                                    content = sel.xpath('//*[@id="todoportal"]/div[7]/div/div[3]/div[2]/div[1]/div[1]/div/div[1]//text()').extract()
                                     if len(content) == 0:
-                                        self.not_allowed += 1
+                                        content = sel.xpath('//*[@id="articulo"]/div[3]/div/div[6]/div[contains(@class,"p")]//text()')
+                                        if len(content) == 0:
+                                            self.not_allowed += 1
+                                        else:
+                                            content = ' '.join(content)
+                                            item['text'] = content
+                                            self.total_news += 1
+                                            return item
                                     else:
                                         content = ' '.join(content)
                                         item['text'] = content
